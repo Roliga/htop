@@ -66,7 +66,8 @@ typedef enum ColorSchemes_ {
    COLORSCHEME_MIDNIGHT = 4,
    COLORSCHEME_BLACKNIGHT = 5,
    COLORSCHEME_BROKENGRAY = 6,
-   LAST_COLORSCHEME = 7,
+   COLORSCHEME_CUSTOM = 7,
+   LAST_COLORSCHEME = 8,
 } ColorSchemes;
 
 typedef enum ColorElements_ {
@@ -527,6 +528,65 @@ int CRT_colorSchemes[LAST_COLORSCHEME][LAST_COLORELEMENT] = {
       [CPU_STEAL] = ColorPair(Cyan,Black),
       [CPU_GUEST] = ColorPair(Cyan,Black),
    },
+   [COLORSCHEME_CUSTOM] = {
+      [RESET_COLOR] = ColorPair(White,Black),
+      [DEFAULT_COLOR] = ColorPair(White,Black),
+      [FUNCTION_BAR] = ColorPair(Black,Green),
+      [FUNCTION_KEY] = ColorPair(Black,Black),
+      [PANEL_HEADER_FOCUS] = ColorPair(Black,Green),
+      [PANEL_HEADER_UNFOCUS] = ColorPair(Black,Green),
+      [PANEL_SELECTION_FOCUS] = ColorPair(Black,Cyan),
+      [PANEL_SELECTION_FOLLOW] = ColorPair(Black,Yellow),
+      [PANEL_SELECTION_UNFOCUS] = ColorPair(Black,Green),
+      [FAILED_SEARCH] = ColorPair(Black,Red),
+      [UPTIME] = A_BOLD | ColorPair(Yellow,Yellow),
+      [BATTERY] = A_BOLD | ColorPair(Cyan,Black),
+      [LARGE_NUMBER] = A_BOLD | ColorPair(Red,Black),
+      [METER_TEXT] = A_BOLD | ColorPairGrayBlack,
+      [METER_VALUE] = A_BOLD | ColorPair(Cyan,Black),
+      [LED_COLOR] = ColorPair(Green,Black),
+      [TASKS_RUNNING] = A_BOLD | ColorPair(Green,Black),
+      [PROCESS] = A_NORMAL,
+      [PROCESS_SHADOW] = A_BOLD | ColorPairGrayBlack,
+      [PROCESS_TAG] = A_BOLD | ColorPair(Yellow,Black),
+      [PROCESS_MEGABYTES] = ColorPair(Green,Black),
+      [PROCESS_BASENAME] = ColorPair(Yellow,Yellow),
+      [PROCESS_TREE] = ColorPairGrayBlack,
+      [PROCESS_R_STATE] = ColorPair(Green,Black),
+      [PROCESS_D_STATE] = A_BOLD | ColorPair(Red,Black),
+      [PROCESS_HIGH_PRIORITY] = ColorPair(Red,Black),
+      [PROCESS_LOW_PRIORITY] = ColorPair(Green,Black),
+      [PROCESS_THREAD] = ColorPair(Green,Black),
+      [PROCESS_THREAD_BASENAME] = A_BOLD | ColorPair(Green,Black),
+      [BAR_BORDER] = A_BOLD,
+      [BAR_SHADOW] = A_BOLD | ColorPairGrayBlack,
+      [SWAP] = ColorPair(Red,Black),
+      [GRAPH_1] = A_BOLD | ColorPair(Cyan,Black),
+      [GRAPH_2] = ColorPair(Cyan,Black),
+      [MEMORY_USED] = ColorPair(Green,Black),
+      [MEMORY_BUFFERS] = ColorPair(Blue,Black),
+      [MEMORY_BUFFERS_TEXT] = A_BOLD | ColorPair(Blue,Black),
+      [MEMORY_CACHE] = ColorPair(Yellow,Black),
+      [LOAD_AVERAGE_FIFTEEN] = ColorPair(Cyan,Black),
+      [LOAD_AVERAGE_FIVE] = A_BOLD | ColorPair(Green,Black),
+      [LOAD_AVERAGE_ONE] = A_BOLD | ColorPair(White,Black),
+      [LOAD] = A_BOLD,
+      [HELP_BOLD] = A_BOLD | ColorPair(Cyan,Black),
+      [CLOCK] = A_BOLD,
+      [CHECK_BOX] = ColorPair(Cyan,Black),
+      [CHECK_MARK] = A_BOLD,
+      [CHECK_TEXT] = A_NORMAL,
+      [HOSTNAME] = A_BOLD,
+      [CPU_NICE] = ColorPair(Blue,Black),
+      [CPU_NICE_TEXT] = A_BOLD | ColorPair(Blue,Black),
+      [CPU_NORMAL] = ColorPair(Green,Black),
+      [CPU_KERNEL] = ColorPair(Red,Black),
+      [CPU_IOWAIT] = A_BOLD | ColorPair(Black, Black),
+      [CPU_IRQ] = ColorPair(Yellow,Black),
+      [CPU_SOFTIRQ] = ColorPair(Magenta,Black),
+      [CPU_STEAL] = ColorPair(Cyan,Black),
+      [CPU_GUEST] = ColorPair(Cyan,Black),
+   },
    [COLORSCHEME_BROKENGRAY] = { 0 } // dynamically generated.
 };
 
@@ -729,6 +789,13 @@ void CRT_setColors(int colorScheme) {
             }
          }
       init_pair(ColorIndex(Magenta,Magenta), 8, -1);
+   }
+   if (colorScheme == COLORSCHEME_CUSTOM) {
+      init_pair(ColorIndex(Black,Green), 8, 18);     // Unselected bar
+      init_pair(ColorIndex(Black,Cyan), 20, 19);     // Selected bar
+      init_pair(ColorIndex(Black,Black), 8, 19);     // Function keys
+      init_pair(ColorIndex(Black,Black), 7, 19);     // Function keys
+      init_pair(ColorIndex(Yellow,Yellow), 16, -1);
    }
    CRT_colors = CRT_colorSchemes[colorScheme];
 }
